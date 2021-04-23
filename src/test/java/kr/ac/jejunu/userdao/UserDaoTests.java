@@ -20,4 +20,16 @@ public class UserDaoTests {
         assertThat(user.getName(), is(name));
         assertThat(user.getPassword(), is(password));
     }
+
+    @Test
+    public void InsertUser() {
+        Integer id = 2;
+        String name = "qkqh";
+        String password = "3333";
+        UserDao userDao = new UesrDao();
+        User user = userDao.set(id);
+        assertThat(user.setId(), is(id));
+        assertThat(user.setName(), is(name));
+        assertThat(user.setPassword(), is(password));
+    }
 }
