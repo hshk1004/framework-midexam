@@ -12,23 +12,50 @@ public class UserDao {
     }
 
     public User get(Integer id) throws SQLException {
-        StatementStrategy statementStrategy = new GetStatementStartgy(id);
+        StatementStrategy statementStrategy = connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select * from userinfo where id = ?");
+            preparedStatement.setLong(1, id);
+            return preparedStatement;
+        };
         return jdbcContext.jdbcContextForGet(statementStrategy);
     }
 
     //유저 추가 기능
     public void insert(User user) throws SQLException {
-        StatementStrategy statementStrategy = new InsertStatementStrategy(user);
+        StatementStrategy statementStrategy = connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                "insert into userinfo (name, password) values (?,?)"
+        );
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getPassword());
+            return preparedStatement;
+        };
         jdbcContext.jdbcContextForinsert(user, statementStrategy);
     }
 
     public void update(User user) {
-        StatementStrategy statementStrategy = new UpdateStatementStartgy(user);
+        StatementStrategy statementStrategy = connection -> {
+            PreparedStatement preparedStatement= connection.prepareStatement(
+                    "update userinfo set name = ?, password = ? where id = ?"
+            );
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setInt(3, user.getId());
+            return preparedStatement;
+        };
         jdbcContext.jdbcContextForUpdate(statementStrategy);
     }
 
     public void delete(Integer id) {
-        StatementStrategy statementStrategy = new DeleteStatementStrategy(id);
+        StatementStrategy statementStrategy = connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "delete from userinfo where id = ?"
+            );
+
+            preparedStatement.setInt(1, id);
+            return preparedStatement;
+        };
         jdbcContext.jdbcContextForUpdate(statementStrategy);
     }
 
