@@ -2,9 +2,16 @@ package kr.ac.jejunu.userdao;
 
 import java.sql.*;
 
-public abstract class UserDao {
+public class UserDao {
+    private final ConnentionMaker connentionMaker;
+
+    //생성자를 통해서 UserDao를 사용하는 쪽으로 디펜던시 던짐 - 클라이언트 - 유저 디에이오 테스트
+    public UserDao(ConnentionMaker connentionMaker) {
+        this.connentionMaker = connentionMaker;
+    }
+
     public User get(Integer id) throws ClassNotFoundException, SQLException {
-        Connection connection = getConnection();
+        Connection connection = connentionMaker.getConnection();
         PreparedStatement preparedStatement =
                 connection.prepareStatement("select * from userinfo where id = ?");
         preparedStatement.setLong(1, id);
@@ -26,7 +33,7 @@ public abstract class UserDao {
 
     //유저 추가 기능
     public void insert(User user) throws ClassNotFoundException, SQLException {
-        Connection connection = getConnection();
+        Connection connection = connentionMaker.getConnection();
         PreparedStatement preparedStatement =
                 connection.prepareStatement("insert into userinfo (name, password) values (?,?)", Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, user.getName());
@@ -39,11 +46,5 @@ public abstract class UserDao {
         preparedStatement.close();
         connection.close();
     }
-
-    //중복된 부분 메서드 리펙토링 상속기반 추상화 패턴이 템플릿 메서드 패턴
-    abstract public Connection getConnection() throws ClassNotFoundException, SQLException {
-//        Class.forName("com.mysql.cj.jdbc.Driver");
-//        return DriverManager.getConnection("jdbc:mysql://localhost/jeju?serverTimezone=UTC"
-//                , "jeju", "jejupw");
-    }
 }
+

@@ -15,7 +15,8 @@ public class UserDaoTests {
         Integer id = 1;
         String name = "hulk";
         String password = "1234";
-        UserDao userDao = new JejuUserDao();
+        ConnentionMaker connentionMaker = new JejuConnentionMaker();
+        UserDao userDao = new UserDao(connentionMaker);
         User user = userDao.get(id);
         assertThat(user.getId(), is(id));
         assertThat(user.getName(), is(name));
@@ -33,7 +34,8 @@ public class UserDaoTests {
         user.setName(name);
         user.setPassword(password);
 
-        UserDao userDao = new JejuUserDao();
+        ConnentionMaker connentionMaker = new JejuConnentionMaker();
+        UserDao userDao = new UserDao(connentionMaker);
         userDao.insert(user);
         assertThat(user.getId(), greaterThan(0));
 
@@ -47,7 +49,8 @@ public class UserDaoTests {
         Integer id = 1;
         String name = "hulk";
         String password = "1234";
-        UserDao userDao = new HallaUserDao();
+        ConnentionMaker connentionMaker = new HallaConnentionMaker();
+        UserDao userDao = new UserDao(connentionMaker);
         User user = userDao.get(id);
         assertThat(user.getId(), is(id));
         assertThat(user.getName(), is(name));
@@ -65,7 +68,8 @@ public class UserDaoTests {
         user.setName(name);
         user.setPassword(password);
 
-        UserDao userDao = new HallaUserDao();
+        ConnentionMaker connentionMaker = new HallaConnentionMaker();
+        UserDao userDao = new UserDao(connentionMaker);
         userDao.insert(user);
         assertThat(user.getId(), greaterThan(0));
 
