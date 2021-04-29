@@ -1,6 +1,7 @@
 package kr.ac.jejunu.userdao;
 
 
+import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
@@ -62,6 +63,48 @@ public class UserDaoTests {
         User insertedUser = userDao.get(user.getId());
         assertThat(insertedUser.getName(), is(name));
         assertThat(insertedUser.getPassword(), is(password));
+    }
+
+    @Test
+    public void update() throws SQLException {
+        String name = "whffu";
+        String password = "12345";
+        //유저의 이름과 비번 설정
+        User user = new User();
+        user.setName(name);
+        user.setPassword(password);
+
+        userDao.insert(user);
+
+        //추가할 사용자 이름과 비번
+        String updatedName = "dhkdlvn";
+        String updatedPassword = "123415";
+        user.setName(updatedName);
+        user.setPassword(updatedPassword);
+
+        userDao.update(user);
+
+        User updatedUser = userDao.get(user.getId());
+        assertThat(updatedUser.getName(), is(updatedName));
+        assertThat(updatedUser.getPassword(), is(updatedPassword));
+    }
+
+    @Test
+    public void delete() throws SQLException {
+        String name = "whffu";
+        String password = "12345";
+        //유저의 이름과 비번 설정
+        User user = new User();
+        user.setName(name);
+        user.setPassword(password);
+
+        userDao.insert(user);
+
+        userDao.delete(user.getId());
+
+        User deletedUser = userDao.get(user.getId());
+
+        assertThat(deletedUser, IsNull.nullValue());
     }
 
 //    @Test
