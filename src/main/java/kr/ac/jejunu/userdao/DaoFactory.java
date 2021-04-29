@@ -22,7 +22,12 @@ public class DaoFactory {
 
     @Bean
     public UserDao getUserDao() {
-        return new UserDao(dataSource());
+        return new UserDao(jdbcContext());
+    }
+
+    @Bean
+    public jdbcContext jdbcContext(){
+        return new jdbcContext(dataSource());
     }
 
     @Bean
